@@ -22,7 +22,7 @@ def api_root(request, format=None):
 class OperationViewSet(viewsets.ModelViewSet):
     queryset = Operation.objects.all()
     serializer_class = ControlSerializer
-    filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter, DjangoFilterBackend]
     filterset_fields = ['title', 'pub_date', 'transaction']
     
     def list(self, request, *args, **kwargs):

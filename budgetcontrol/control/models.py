@@ -3,8 +3,8 @@ from django.utils import timezone
 
 
 class Tag(models.Model):
-    name = models.CharField('Название тега', max_length=30)
-    
+    name = models.SlugField('Название тега', primary_key=True, allow_unicode=True)
+    search_fields = ['name']
 
     def __str__(self):
         return self.name
