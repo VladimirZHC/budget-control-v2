@@ -1,14 +1,14 @@
-from .models import Operation
-from .serializers import ControlSerializer
-from rest_framework import generics
+from .models import Operation, Tag
+from .serializers import ControlSerializer, TagSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
-from rest_framework import renderers
-from .models import Sum
 from rest_framework import viewsets
-from rest_framework.decorators import action
-
+from decimal import Decimal
+from django.db.models.functions import Coalesce
+from django.db.models import Sum
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 
 @api_view(['GET'])
@@ -19,27 +19,25 @@ def api_root(request, format=None):
 
 
 
-# class OperationList(generics.ListCreateAPIView):
-#     queryset = Operation.objects.all()
-#     serializer_class = ControlSerializer
-    
-# class OperationDetail(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = Operation.objects.all()
-#     serializer_class = ControlSerializer
-
-# class OperationHighlight(generics.GenericAPIView):
-#     queryset = Operation.objects.all()
-#     renderer_classes = [renderers.StaticHTMLRenderer]
-    
-#     def get(self, request, *args, **kwargs):
-#         operation = self.get_object()
-#         return Response(operation)
-
 class OperationViewSet(viewsets.ModelViewSet):
     queryset = Operation.objects.all()
     serializer_class = ControlSerializer
+    filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
+    filterset_fields = ['title', 'pub_date', 'transaction']
     
-    @action(detail=True, renderer_classes=[renderers.StaticHTMLRenderer])
-    def highlight(self, request, *args, **kwargs):
-        operation = self.get_object()
-        return Response(operation)
+    def list(self, request, *args, **kwargs):
+        result = super().list(self, request, *args, **kwargs)
+        result.data.update({
+            'total': Decimal(
+            Operation.objects
+            .aggregate(total=Coalesce(Sum('transaction'), Decimal(0.00)))['total']
+        )
+        })
+        return Response(result.data)
+    
+    
+class TagViewSet(viewsets.ModelViewSet):
+    queryset = Tag.objects.all()
+    print(queryset)
+    serializer_class = TagSerializer
+    

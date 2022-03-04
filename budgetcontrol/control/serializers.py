@@ -1,16 +1,15 @@
-
-from pygments import highlight
 from rest_framework import serializers
-from .models import Operation
+from .models import Operation, Tag
+from django.utils import timezone
 
 
 class ControlSerializer(serializers.HyperlinkedModelSerializer):
-    highlight = serializers.HyperlinkedIdentityField(view_name='operation-highlight', format='html')
+    day = serializers.DateTimeField(source='pub_date', format='%H:%M:%S %d/%m/%Y', default=timezone.now)
     class Meta:
         model = Operation
-        fields = ('id', 'highlight', 'title', 'transaction', 'pub_date', 'total')
-
+        fields = ('id', 'title', 'transaction', 'day', 'tags')
         
-        
-
-    
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = '__all__'
