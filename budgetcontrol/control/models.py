@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from simple_history.models import HistoricalRecords
 
 
 class Tag(models.Model):
@@ -26,6 +27,7 @@ class Operation(models.Model):
         blank=True,
         verbose_name='Теги',
     )
+    history = HistoricalRecords(cascade_delete_history=True)
     
     
     def __str__(self):
@@ -33,7 +35,7 @@ class Operation(models.Model):
     
         
     class Meta:
-        ordering = ('pub_date',)
+        ordering = ('-pub_date',)
         verbose_name = 'Операция'
         verbose_name_plural = 'Операции'
 
