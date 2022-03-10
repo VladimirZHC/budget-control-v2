@@ -9,6 +9,7 @@ operation_history = views.OperationHistoryViewSet.as_view(
     }
 )
 
+
 router = DefaultRouter()
 router.register(r'operations', views.OperationViewSet)
 router.register(r'tags', views.TagViewSet)

@@ -1,6 +1,7 @@
 from django.db import models
-from django.utils import timezone
 from simple_history.models import HistoricalRecords
+
+
 
 
 class Tag(models.Model):
@@ -17,17 +18,21 @@ class Tag(models.Model):
 
 
 
+
 class Operation(models.Model):
     title = models.CharField('Название транзакции', max_length=100, blank=False, default='')
     transaction = models.DecimalField('операция', blank=False, max_digits=20, decimal_places=2)
-    pub_date = models.DateTimeField('Дата транзакции', default=timezone.now)
+    pub_date = models.DateTimeField('Дата транзакции', auto_now_add=True, null=True, blank=True)
+    updated_date = models.DateTimeField('Дата изменения транзакции', auto_now=True, null=True, blank=True)
     tags = models.ManyToManyField(
         Tag,
         related_name='tags',
         blank=True,
         verbose_name='Теги',
     )
-    history = HistoricalRecords(cascade_delete_history=True)
+    history = HistoricalRecords(inherit=True)
+    
+
     
     
     def __str__(self):
@@ -38,4 +43,5 @@ class Operation(models.Model):
         ordering = ('-pub_date',)
         verbose_name = 'Операция'
         verbose_name_plural = 'Операции'
+        
 

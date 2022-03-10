@@ -53,3 +53,11 @@ class OperationHistoryViewSet(viewsets.ModelViewSet):
             return queryset
         raise NotFound()
     
+    # def list(self, request, *args, **kwargs):
+    #     result = super().list(self, request, *args, **kwargs)
+    #     result.data.update({
+    #         'tags': Operation.objects.all().aggregate('tags')
+    #     })
+    #     return Response(result.data)
+    
+    
