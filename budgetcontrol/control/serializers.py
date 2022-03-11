@@ -28,12 +28,12 @@ class ControlSerializer(serializers.ModelSerializer):
         
 
 class HistoryOperationSerializer(serializers.ModelSerializer):
+    operation_id = serializers.CharField()
     history_id = serializers.CharField(source='id')
     up_day = serializers.DateTimeField(format='%H:%M:%S %d/%m/%Y')
-    # tags = serializers.ListField()
     class Meta:
         model = HistoryOperation
-        fields = ('operation', 'history_id', 'title', 'up_day', 'transaction', 'tags')
+        fields = ('operation_id', 'history_id', 'title', 'up_day', 'transaction', 'tags')
         
         
 
