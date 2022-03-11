@@ -11,10 +11,5 @@ def create_history(sender, instance, created, **kwargs):
         operation = instance,
         title = instance.title,
         transaction=instance.transaction,
-        tags = instance.tags             
+        tags = list(instance.tags.values_list(flat=True))          
         )
-    
-
-# @receiver(post_save, sender=Operation)
-# def save_history(sender, instance, **kwargs):
-#     instance.operation.save()

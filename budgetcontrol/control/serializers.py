@@ -27,7 +27,7 @@ class ControlSerializer(serializers.ModelSerializer):
 #         fields = ('history_id', 'history_date', 'pub_date', 'title', 'transaction')
         
 
-class HistoryOperationSerializer(serializers.ModelSerializer):
+class HistoryOperationSerializer(ControlSerializer):
     operation_id = serializers.CharField()
     history_id = serializers.CharField(source='id')
     up_day = serializers.DateTimeField(format='%H:%M:%S %d/%m/%Y')

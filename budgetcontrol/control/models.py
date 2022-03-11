@@ -33,7 +33,7 @@ class Operation(models.Model):
     # history = HistoricalRecords(inherit=True)
     
     def save(self, *args, **kwargs):
-        super().save()
+        super().save(*args, **kwargs)
    
     
     
@@ -53,7 +53,11 @@ class HistoryOperation(models.Model):
     title = models.CharField('Название транзакции', max_length=100, blank=False, default='')
     transaction = models.DecimalField('операция', blank=False, max_digits=20, decimal_places=2)
     up_day = models.DateTimeField('Дата изменения транзакции', auto_now_add=True, null=True, blank=True)
-    tags = models.CharField('Теги', max_length=30)
+    tags = models.CharField('Теги', max_length=30, blank=True, null=True)
+    
+    
+    def __str__(self):
+        return f' История транзакции: { self.operation}'
     
     
     class Meta:
