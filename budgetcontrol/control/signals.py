@@ -1,8 +1,7 @@
-
 from .models import Operation, HistoryOperation
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-import json
+
 
 
 @receiver(post_save, sender=Operation)
