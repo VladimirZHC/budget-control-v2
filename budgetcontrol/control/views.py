@@ -46,9 +46,14 @@ class TagViewSet(viewsets.ModelViewSet):
 
 
 class HistoryOperationViewSet(viewsets.ModelViewSet):
-    queryset = HistoryOperation.objects.all()
     serializer_class = HistoryOperationSerializer
     
+    def get_queryset(self):
+        operation = self.kwargs.get('pk', None)
+        queryset = HistoryOperation.objects.filter(operation=operation)
+        if queryset:
+             return queryset
+        raise NotFound()
     
 
 # class OperationHistoryViewSet(viewsets.ModelViewSet):
