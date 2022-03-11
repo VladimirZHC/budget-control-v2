@@ -18,6 +18,32 @@ class ControlSerializer(serializers.ModelSerializer):
         model = Operation
         fields = ('id', 'title', 'transaction', 'day', 'update_day', 'tags')
         
+    
+    def create(self, validated_data):
+        result = super().create(validated_data)
+        
+        obj = HistoryOperation.objects.create(
+            operation = result,
+            title = result.title,
+            transaction = result.transaction,
+            tags = list(result.tags.values_list(flat=True))
+        )
+        return obj
+    
+    def update(self, instance, validated_data):
+        super().update(instance, validated_data)        
+
+        res = HistoryOperation.objects.create(
+            operation = instance,
+            title = instance.title,
+            transaction=instance.transaction,
+            tags = list(instance.tags.values_list(flat=True))
+        )
+        
+        return res
+
+
+
 
 # class HistorySerializer(ControlSerializer):
 #     history_date = serializers.DateTimeField(format='%H:%M:%S %d/%m/%Y')
