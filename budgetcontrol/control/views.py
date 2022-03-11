@@ -1,5 +1,5 @@
-from .models import Operation, Tag
-from .serializers import ControlSerializer, TagSerializer, HistorySerializer
+from .models import HistoryOperation, Operation, Tag
+from .serializers import ControlSerializer, HistoryOperationSerializer, TagSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -43,21 +43,21 @@ class TagViewSet(viewsets.ModelViewSet):
     serializer_class = TagSerializer
     
 
-class OperationHistoryViewSet(viewsets.ModelViewSet):
-    serializer_class = HistorySerializer
+
+
+class HistoryOperationViewSet(viewsets.ModelViewSet):
+    queryset = HistoryOperation.objects.all()
+    serializer_class = HistoryOperationSerializer
     
-    def get_queryset(self):
-        id = self.kwargs.get('pk', None)
-        queryset = Operation.history.filter(id=id)
-        if queryset:
-            return queryset
-        raise NotFound()
     
-    # def list(self, request, *args, **kwargs):
-    #     result = super().list(self, request, *args, **kwargs)
-    #     result.data.update({
-    #         'tags': Operation.objects.all().aggregate('tags')
-    #     })
-    #     return Response(result.data)
+
+# class OperationHistoryViewSet(viewsets.ModelViewSet):
+#     serializer_class = HistorySerializer
     
+#     def get_queryset(self):
+#         id = self.kwargs.get('pk', None)
+#         queryset = Operation.history.filter(id=id)
+#         if queryset:
+#             return queryset
+#         raise NotFound()
     

@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'control',
+    'control.apps.ControlConfig',
     'django_filters',
     'simple_history',
 ]

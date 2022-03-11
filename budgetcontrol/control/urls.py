@@ -3,7 +3,7 @@ from . import views
 from rest_framework.routers import DefaultRouter
 
 
-operation_history = views.OperationHistoryViewSet.as_view(
+operation_history = views.HistoryOperationViewSet.as_view(
     {
         'get': 'list',
     }

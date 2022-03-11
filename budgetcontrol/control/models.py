@@ -1,5 +1,5 @@
 from django.db import models
-from simple_history.models import HistoricalRecords
+# from simple_history.models import HistoricalRecords
 
 
 
@@ -30,9 +30,11 @@ class Operation(models.Model):
         blank=True,
         verbose_name='Теги',
     )
-    history = HistoricalRecords(inherit=True)
+    # history = HistoricalRecords(inherit=True)
     
-
+    def save(self, *args, **kwargs):
+        super().save()
+   
     
     
     def __str__(self):
@@ -44,4 +46,16 @@ class Operation(models.Model):
         verbose_name = 'Операция'
         verbose_name_plural = 'Операции'
         
-
+        
+        
+class HistoryOperation(models.Model):
+    operation = models.ForeignKey(Operation, related_name='history', on_delete=models.CASCADE)
+    title = models.CharField('Название транзакции', max_length=100, blank=False, default='')
+    transaction = models.DecimalField('операция', blank=False, max_digits=20, decimal_places=2)
+    up_day = models.DateTimeField('Дата изменения транзакции', auto_now_add=True, null=True, blank=True)
+    tags = models.CharField('Теги', max_length=30)
+    
+    
+    class Meta:
+        verbose_name = 'Историю'
+        verbose_name_plural = 'Истории'

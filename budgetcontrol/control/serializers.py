@@ -1,12 +1,14 @@
 from rest_framework import serializers
-from .models import Operation, Tag
+from .models import HistoryOperation, Operation, Tag
 from django.utils import timezone
+
+
+
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ('name',)
-
 
 
 class ControlSerializer(serializers.ModelSerializer):
@@ -17,11 +19,22 @@ class ControlSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'transaction', 'day', 'update_day', 'tags')
         
 
-class HistorySerializer(ControlSerializer):
-    history_date = serializers.DateTimeField(format='%H:%M:%S %d/%m/%Y')
-    pub_date = serializers.DateTimeField(format='%H:%M:%S %d/%m/%Y')
+# class HistorySerializer(ControlSerializer):
+#     history_date = serializers.DateTimeField(format='%H:%M:%S %d/%m/%Y')
+#     pub_date = serializers.DateTimeField(format='%H:%M:%S %d/%m/%Y')
+#     class Meta:
+#         model = Operation.history.model
+#         fields = ('history_id', 'history_date', 'pub_date', 'title', 'transaction')
+        
+
+class HistoryOperationSerializer(serializers.ModelSerializer):
+    operation_id = serializers.CharField(source='operation')
+    history_id = serializers.CharField(source='id')
+    up_day = serializers.DateTimeField(format='%H:%M:%S %d/%m/%Y')
+    tags = serializers.ListField()
     class Meta:
-        model = Operation.history.model
-        fields = ('history_id', 'history_date', 'pub_date', 'title', 'transaction')
+        model = HistoryOperation
+        fields = ('operation_id', 'history_id', 'title', 'up_day', 'transaction', 'tags')
+        
         
 
