@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import HistoryOperation, Operation, Tag
 from django.utils import timezone
+import json
 
 
 
@@ -22,22 +23,22 @@ class ControlSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         result = super().create(validated_data)
         
-        obj = HistoryOperation.objects.create(
+        HistoryOperation.objects.create(
             operation = result,
             title = result.title,
             transaction = result.transaction,
-            tags = list(result.tags.values_list(flat=True))
+            tags = json.dumps(list(result.tags.values_list(flat=True)))
         )
-        return obj
+        return result
     
     def update(self, instance, validated_data):
-        super().update(instance, validated_data)        
+        res = super().update(instance, validated_data)        
 
-        res = HistoryOperation.objects.create(
+        HistoryOperation.objects.create(
             operation = instance,
             title = instance.title,
             transaction=instance.transaction,
-            tags = list(instance.tags.values_list(flat=True))
+            tags = json.dumps(list(instance.tags.values_list(flat=True)))
         )
         
         return res
@@ -45,18 +46,19 @@ class ControlSerializer(serializers.ModelSerializer):
 
 
 
-# class HistorySerializer(ControlSerializer):
-#     history_date = serializers.DateTimeField(format='%H:%M:%S %d/%m/%Y')
-#     pub_date = serializers.DateTimeField(format='%H:%M:%S %d/%m/%Y')
-#     class Meta:
-#         model = Operation.history.model
-#         fields = ('history_id', 'history_date', 'pub_date', 'title', 'transaction')
-        
+
 
 class HistoryOperationSerializer(ControlSerializer):
     operation_id = serializers.CharField()
     history_id = serializers.CharField(source='id')
     up_day = serializers.DateTimeField(format='%H:%M:%S %d/%m/%Y')
+    
+    tags = serializers.SerializerMethodField()
+    
+    def get_tags(self, obj):
+        return json.loads(obj.tags)
+    
+    
     class Meta:
         model = HistoryOperation
         fields = ('operation_id', 'history_id', 'title', 'up_day', 'transaction', 'tags')

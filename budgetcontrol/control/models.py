@@ -1,5 +1,5 @@
 from django.db import models
-# from simple_history.models import HistoricalRecords
+
 
 
 
@@ -30,7 +30,6 @@ class Operation(models.Model):
         blank=True,
         verbose_name='Теги',
     )
-    # history = HistoricalRecords(inherit=True)
     
    
     def __str__(self):
@@ -53,7 +52,7 @@ class HistoryOperation(models.Model):
     
     
     def __str__(self):
-        return f' История транзакции: { self.operation}'
+        return f' История транзакции: {self.operation}'
     
     
     class Meta:

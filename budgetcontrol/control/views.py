@@ -56,13 +56,4 @@ class HistoryOperationViewSet(viewsets.ModelViewSet):
         raise NotFound()
     
 
-# class OperationHistoryViewSet(viewsets.ModelViewSet):
-#     serializer_class = HistorySerializer
-    
-#     def get_queryset(self):
-#         id = self.kwargs.get('pk', None)
-#         queryset = Operation.history.filter(id=id)
-#         if queryset:
-#             return queryset
-#         raise NotFound()
     

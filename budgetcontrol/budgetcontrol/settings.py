@@ -30,7 +30,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'control.apps.ControlConfig',
     'django_filters',
-    'simple_history',
 ]
 
 MIDDLEWARE = [
@@ -123,5 +122,3 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 5,
 }
 
-SIMPLE_HISTORY_HISTORY_ID_USE_UUID = True
-SIMPLE_HISTORY_HISTORY_CHANGE_REASON_USE_TEXT_FIELD=True
