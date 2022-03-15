@@ -72,7 +72,7 @@ class Currency(models.Model):
     name = models.SlugField('Название валюты', primary_key=True, allow_unicode=True)
     rate = models.DecimalField('курс по отношению к рублю', blank=False, max_digits=20, decimal_places=2)
     description = models.CharField('краткое описание', max_length=30, blank=False)
-    objects = CurrencyManager()
+    # objects = CurrencyManager()
     
     search_fields = ['name']
     
