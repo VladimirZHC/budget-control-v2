@@ -1,3 +1,4 @@
+
 from django.urls import path, include
 from . import views
 from rest_framework.routers import DefaultRouter
@@ -10,9 +11,12 @@ operation_history = views.HistoryOperationViewSet.as_view(
 )
 
 
+
+
 router = DefaultRouter()
 router.register(r'operations', views.OperationViewSet)
 router.register(r'tags', views.TagViewSet)
+router.register(r'currency', views.CurrencyOperationViewSet)
 
 
 urlpatterns = [

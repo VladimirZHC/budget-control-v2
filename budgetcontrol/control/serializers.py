@@ -1,19 +1,22 @@
+
 from rest_framework import serializers
-from .models import HistoryOperation, Operation, Tag
+from .models import Currency, HistoryOperation, Operation, Tag
 from django.utils import timezone
 import json
-
-
+import requests
 
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ('name',)
+        
+        
+        
 
 
 class ControlSerializer(serializers.ModelSerializer):
-    day = serializers.DateTimeField(source='pub_date', format='%H:%M:%S %d/%m/%Y', default=timezone.now)
+    day = serializers.DateTimeField(source='pub_date', format='%H:%M:%S %d/%m/%Y')
     update_day = serializers.DateTimeField(source='updated_date', format='%H:%M:%S %d/%m/%Y', default=timezone.now)
     class Meta:
         model = Operation
@@ -65,3 +68,9 @@ class HistoryOperationSerializer(ControlSerializer):
         
         
 
+class CurrencySerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Currency
+        fields =  '__all__'
+    

@@ -1,3 +1,5 @@
+from pyexpat import model
+from unicodedata import name
 from django.db import models
 
 
@@ -58,3 +60,31 @@ class HistoryOperation(models.Model):
     class Meta:
         verbose_name = 'Историю'
         verbose_name_plural = 'Истории'
+        
+        
+# class CurrencyManager(models.Manager):
+#     def lala(self):
+#         print('lalal')
+        
+        
+        
+class Currency(models.Model):
+    name = models.SlugField('Название валюты', primary_key=True, allow_unicode=True)
+    rate = models.DecimalField('курс по отношению к рублю', blank=False, max_digits=20, decimal_places=2)
+    description = models.CharField('краткое описание', max_length=30, blank=False)
+    objects = CurrencyManager()
+    
+    search_fields = ['name']
+    
+    def __str__(self):
+        return f'Курс {self.name}'
+    
+    class Meta:
+        verbose_name = 'Курс валюты'
+        verbose_name_plural = 'Курсы валюты'
+        
+        
+# res = CurrencyManager()
+# res.lala()
+
+    
